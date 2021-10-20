@@ -1,14 +1,23 @@
+import urllib.request
+
 import torch
 import json
 import numpy as np
 import torchvision.transforms as transforms
+import pandas as pd
 from PIL import Image
 from io import BytesIO
+import urllib.request
+import requests
+
 
 
 ## Class Mapping
 class_to_index = {np.int64(k):v for k,v in json.loads(open("resnet50_50imgs_top3000.json","r").read()).items()}
 index_to_class = {v:k for k,v in class_to_index.items()}
+
+## load the train csv
+image_repo = pd.read_csv("./train.csv")
 
 ## Load Model
 
@@ -22,14 +31,7 @@ image_transform = transforms.Compose([
 
 
 def predict_image(filename, model = model, transform=image_transform, class_map=index_to_class):
-    # Loading and opening the image
-    # if filename.startswith("http"):
-    #     response = requests.get(filename)
-    #     image = Image.open(BytesIO(response.content))
-    # else:
-    #     image = Image.open(BytesIO(filename))
-    # plt.imshow(image)
-    # plt.show()
+
     ## Image transformation
     image = transform(filename)
     image = image[None, :, :, :]  ## Adding a single dimension to image
@@ -41,4 +43,10 @@ def predict_image(filename, model = model, transform=image_transform, class_map=
         score, pred = torch.max(output, 1)
         pred_label = class_map[pred.item()]
         data = {'Prediction Landmark': pred_label, "Score": score.item()}
-    return pred_label
+        urls = image_repo[image_repo['landmark_id'] == pred_label].sample(30, replace='True')['url'].to_list()
+
+    return pred_label, urls
+
+
+
+

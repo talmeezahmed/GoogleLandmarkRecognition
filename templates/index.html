@@ -4,12 +4,25 @@
 <center>
     <div class="centered">
         <p><b>Upload an image to predict its class</b></p>
-        <div class="upload-form">
-          <form action = "/uploader" method = "POST" enctype = "multipart/form-data">
+        <div class="upload-file">
+          <form class = "file-form" action = "/uploader" method = "POST" enctype = "multipart/form-data">
             <input type = "file" name = "file" />
             <input type = "submit"/>
           </form>
         </div>
- </div>
+
+        <div class = "uploadOR">
+            <span>OR</span>
+        </div>
+        <div class = "upload-link">
+            <form class = "link-form" action="/uploader" method="POST" enctype = "multiplart/form-data">
+                  <input class="link-form" name="link" type="text", maxlength="1000" placeholder="Paste the image url"/>
+            <input type = "submit" />
+          </form>
+        </div>
+        <div class = "header-content-sub">
+            <p style = "..." class="header-content-info">{{ error }}</p>
+        </div>
+    </div>
 </center>
 {% endblock %}

@@ -1,22 +1,22 @@
 {% extends "layout.html" %}
 
 {% block content %}
+
 <div class="centered">
     <div class="row">
         <div class="col-md-5">
             <div class="image-container">
+                 </br>
                 <figure>
-                  <img src="/static/uploads/{{display_image}}" style="width:400px;height:250px;">
+                  <img src="/static/uploads/{{display_image}}" style="width:400px;height:250px;" width="100" height="100">
                 </figure>
             </div>
         </div>
     </div>
+
     <div class="row">
-        <p style="color:red"> {{predictions}}</p>
+        <p style="color:red">Landmark ID: {{predictions}}</p>
     </div>
-
-    </br>
-
     <div class="row">
         <div class="col-md-5">
             <div class="upload-form">
@@ -26,8 +26,25 @@
                     <input type = "file" name = "file" />
                     <input type = "submit"/>
                 </form>
+                <div class = "uploadOR">
+            <span>OR</span>
+        </div>
+        <div class = "upload-link">
+            <form class = "link-form" action="/uploader" method="POST" enctype = "multiplart/form-data">
+                  <input class="link-form" name="link" type="text", maxlength="1000" placeholder="Paste the image url"/>
+            <input type = "submit" />
+          </form>
+        </div>
             </div>
         </div>
+    </div>
+    <br><br>
+	<div class="myGallery">
+        {%for url in similar_images:%}
+
+      <img class = "photos" src={{url}} width="240" height="240">
+       {% endfor %}
+
     </div>
 </div>
 {% endblock %}
